@@ -23,8 +23,18 @@ const ProductsProvider: React.FC = ({ children }) => {
     callApi();
   }, []);
 
+  const findProducts = async (limit: number) => {
+    const response = await productsApi.findAll({
+      limit,
+    });
+
+    if (!response) return;
+
+    setProducts(response);
+  };
+
   return (
-    <ProductsContext.Provider value={{ products }}>
+    <ProductsContext.Provider value={{ products, findProducts }}>
       {children}
     </ProductsContext.Provider>
   );
