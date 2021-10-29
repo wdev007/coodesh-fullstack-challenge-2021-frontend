@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch } from "react-router-dom";
 
-import ProductsRoutes from "../../domains/products/products.routing";
+import ProductsRoutes from "../../modules/products/products.routing";
 
 const Routes: React.FC = () => (
   <Switch>
