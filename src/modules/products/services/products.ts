@@ -1,32 +1,26 @@
 import axios from "axios";
 import { IProduct } from "../interfaces/product.interface";
 import { SERVER_BASE_URL } from "../../../shared/utils/constants";
-
-export interface IProductsApi {
-  findAll(filters: IFilterFindAll): Promise<IProduct[] | null>;
-  findOne(code: number): Promise<IProduct | null>;
-}
-
-interface IResponseAPI<T> {
-  data: T;
-}
-
-interface IFilterFindAll {
-  limit?: number;
-  skip?: number;
-  startId?: string;
-}
+import {
+  IFilterFindAll,
+  IResponseAPI,
+  IProductsApi,
+} from "../interfaces/product.service.interface";
 
 const PRODUCTS_BASE_URL = `${SERVER_BASE_URL}/products`;
 
 const productsApi: IProductsApi = {
-  findAll: async ({ limit }: IFilterFindAll): Promise<IProduct[] | null> => {
+  findAll: async ({
+    limit,
+    skip,
+  }: IFilterFindAll): Promise<IResponseAPI<IProduct[]> | null> => {
     try {
-      let url = `${PRODUCTS_BASE_URL}?limit=${limit}`;
+      const skipUrl = skip ? `&skip=${skip}` : "";
+      let url = `${PRODUCTS_BASE_URL}?limit=${limit}${skipUrl}`;
 
       const { data } = await axios.get<IResponseAPI<IProduct[]>>(url);
 
-      return data.data;
+      return data;
     } catch (error) {
       return null;
     }
@@ -34,11 +28,11 @@ const productsApi: IProductsApi = {
 
   findOne: async (code: number): Promise<IProduct | null> => {
     try {
-      const { data } = await axios.get<IResponseAPI<IProduct>>(
+      const { data } = await axios.get<IProduct>(
         `${PRODUCTS_BASE_URL}/${code}`
       );
 
-      return data.data;
+      return data;
     } catch (error) {
       return null;
     }

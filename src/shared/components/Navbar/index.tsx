@@ -6,11 +6,14 @@ const Navbar = () => {
   const themeName = useColorModeValue("dark", "light");
   return (
     <Box bg="#36435C" w="100%" p={4} color="white">
-      <Flex justifyContent="space-between" w="100%">
-        <Text>MyApp</Text>
+      <Flex justifyContent="space-between" w="100%" alignItems="center">
+        <Text>ProdList</Text>
         <Flex w="10%" justifyContent="space-between" alignContent="center">
           <ColorModeSwitcher />
-          <Button color={themeName === "dark" ? "black" : "white"}>
+          <Button
+            color={themeName === "dark" ? "black" : "white"}
+            bgColor={themeName === "dark" ? "white" : ""}
+          >
             Logout
           </Button>
         </Flex>

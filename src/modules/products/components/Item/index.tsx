@@ -3,15 +3,21 @@ import { Box, Flex, Image } from "@chakra-ui/react";
 
 import { IProduct } from "../../interfaces/product.interface";
 
-const Item: FC<IProduct> = ({ image_url, product_name }) => {
+interface IProps extends IProduct {
+  onClick: () => void;
+}
+
+const Item: FC<IProps> = ({ image_url, product_name, onClick }) => {
   return (
     <Box
       w="100%"
-      // h="60"
       maxW="sm"
       borderWidth="2px"
       borderRadius="lg"
       overflow="hidden"
+      shadow="xl"
+      cursor="pointer"
+      onClick={onClick}
     >
       <Flex
         alignItems="center"
@@ -31,13 +37,16 @@ const Item: FC<IProduct> = ({ image_url, product_name }) => {
             boxSize="80px"
           />
         </Flex>
-        <Box p="6">
+        <Box p="3" w="100%">
           <Box
             mt="1"
             fontWeight="semibold"
             as="h4"
             lineHeight="tight"
             isTruncated
+            maxW="60%"
+            margin="auto"
+            textAlign="center"
           >
             {product_name}
           </Box>

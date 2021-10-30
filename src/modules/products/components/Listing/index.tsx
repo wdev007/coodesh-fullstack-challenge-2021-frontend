@@ -1,12 +1,5 @@
-import React, { FC, useContext, ChangeEvent, useEffect } from "react";
-import {
-  Grid,
-  ButtonProps,
-  Center,
-  Button,
-  Select,
-  Box,
-} from "@chakra-ui/react";
+import React, { FC, useContext, ChangeEvent, useState } from "react";
+import { Grid, Center, Select, Box, Flex } from "@chakra-ui/react";
 import {
   Paginator,
   Container,
@@ -17,52 +10,30 @@ import {
 } from "chakra-paginator";
 
 import { ProductsContext } from "../../contexts/products";
+import { activeStyles, normalStyles, separatorStyles } from "./styles";
 
 import Item from "../Item";
-
-// styles
-const baseStyles: ButtonProps = {
-  w: 7,
-  fontSize: "sm",
-};
-
-const normalStyles: ButtonProps = {
-  ...baseStyles,
-  _hover: {
-    bg: "green.300",
-  },
-  bg: "red.300",
-};
-
-const activeStyles: ButtonProps = {
-  ...baseStyles,
-  _hover: {
-    bg: "blue.300",
-  },
-  bg: "green.300",
-};
-
-const separatorStyles: ButtonProps = {
-  w: 7,
-  bg: "green.200",
-};
+import AppModal from "../../../../shared/components/Modal";
+import { IProduct } from "../../interfaces/product.interface";
+import ModalBody from "../ModalBody";
 
 const outerLimit = 2;
 const innerLimit = 2;
 
 const Listing: FC = () => {
-  const { products, findProducts } = useContext(ProductsContext);
+  const { products, total, findProducts, findOne, product } =
+    useContext(ProductsContext);
+  const [isOpen, setIsOpen] = useState(false);
+
   const {
     isDisabled,
     pagesQuantity,
     currentPage,
     setCurrentPage,
-    setIsDisabled,
     pageSize,
     setPageSize,
-    // offset, // you may not need this most of the times, but it's returned for you anyway
   } = usePaginator({
-    total: products.length,
+    total,
     initialState: {
       pageSize: 12,
       currentPage: 1,
@@ -70,63 +41,86 @@ const Listing: FC = () => {
     },
   });
 
-  useEffect(() => {
-    const main = async () => {
-      await findProducts(pageSize);
-    };
-    main();
-  }, []);
+  const handleClickItem = async (product: IProduct) => {
+    await findOne(product.code);
+    setIsOpen(true);
+  };
 
-  const handlePageChange = (nextPage: number) => {
-    // -> request new data using the page number
+  const handlePageChange = async (nextPage: number) => {
     setCurrentPage(nextPage);
-    console.log("request new data with ->", nextPage);
+    await findProducts({ limit: pageSize, skip: nextPage });
   };
 
-  const handlePageSizeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handlePageSizeChange = async (
+    event: ChangeEvent<HTMLSelectElement>
+  ) => {
     const pageSize = Number(event.target.value);
-
     setPageSize(pageSize);
-  };
-
-  const handleDisableClick = () => {
-    return setIsDisabled((oldState) => !oldState);
+    await findProducts({ limit: pageSize });
   };
 
   return (
     <>
-      <Grid templateColumns="repeat(4, 1fr)" gap={6} w="90%" margin="auto">
-        {products.map((product) => (
-          <Item key={product.barcode} {...product} />
-        ))}
-      </Grid>
-      <Box w="80%" margin="auto">
-        <Paginator
-          isDisabled={isDisabled}
-          activeStyles={activeStyles}
-          innerLimit={innerLimit}
-          currentPage={currentPage}
-          outerLimit={outerLimit}
-          normalStyles={normalStyles}
-          separatorStyles={separatorStyles}
-          pagesQuantity={pagesQuantity}
-          onPageChange={handlePageChange}
-        >
-          <Container align="center" justify="space-between" w="full" p={4}>
-            <Previous>Previous</Previous>
-            <PageGroup isInline align="center" />
-            <Next>Next</Next>
-          </Container>
-        </Paginator>
-        <Center w="full">
-          <Button onClick={handleDisableClick}>Limite</Button>
-          <Select w={40} ml={3} onChange={handlePageSizeChange}>
-            <option value="4">4</option>
-            <option value="8">8</option>
-            <option value="12">12</option>
-          </Select>
-        </Center>
-      </Box>
+      <Flex
+        w="100%"
+        justifyContent="space-between"
+        alignItems="center"
+        flexDirection="column"
+      >
+        <Grid templateColumns="repeat(4, 1fr)" gap={6} w="90%" margin="auto">
+          {products.map((product) => (
+            <Item
+              key={product.barcode}
+              {...product}
+              onClick={() => handleClickItem(product)}
+            />
+          ))}
+        </Grid>
+        <Box w="80%" marginTop="4">
+          <Paginator
+            isDisabled={isDisabled}
+            activeStyles={activeStyles}
+            innerLimit={innerLimit}
+            currentPage={currentPage}
+            outerLimit={outerLimit}
+            normalStyles={normalStyles}
+            separatorStyles={separatorStyles}
+            pagesQuantity={pagesQuantity}
+            onPageChange={handlePageChange}
+          >
+            <Container align="center" justify="space-between" w="full" p={4}>
+              <Previous>Previous</Previous>
+              <PageGroup isInline align="center" />
+              <Next>Next</Next>
+            </Container>
+          </Paginator>
+          <Center w="full">
+            <Select
+              w={40}
+              ml={3}
+              onChange={handlePageSizeChange}
+              defaultChecked
+              defaultValue={12}
+            >
+              <option value="4">4</option>
+              <option value="8">8</option>
+              <option value="12" defaultChecked>
+                12
+              </option>
+            </Select>
+          </Center>
+        </Box>
+      </Flex>
+      <AppModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        onOpen={() => setIsOpen(true)}
+        title={product?.product_name || ""}
+        isLink
+        url={product?.url}
+      >
+        <ModalBody />
+      </AppModal>
     </>
   );
 };
