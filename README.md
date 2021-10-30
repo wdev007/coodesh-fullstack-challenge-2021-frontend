@@ -6,11 +6,23 @@
   </a>
 </p>
 
+<div align="center">
+  <h3 align="center">Coodesh Challenge</h3>
+  <p align="center">
+  an incredible project that extracts products from a web page and serves in a REST API
+  </p>
+  <br/>
+  <a href="https://lab.coodesh.com/wja1/fullstack-challenge-2021?utm_source=mail&utm_medium=sendgrid&utm_campaign=website"><strong>For more information see the challenge repository</strong></a>
+
+</div>
+
 # DEMO
 
 ![Listagem de produtos](docs/images/listing.png)
 
 ![Detalhe do produto](docs/images/detail.png)
+
+---
 
 ### Built With
 
@@ -24,6 +36,31 @@ This section should list any major frameworks/libraries used to bootstrap your p
 - [jest](https://jestjs.io/docs/getting-started/)
 - [docker](https://www.docker.com/)
 - [docker compose](https://docs.docker.com/compose/)
+
+## Getting Started
+
+Instructions on setting up your project locally.
+To get a local copy up and running follow these simple example steps.
+
+### Prerequisites
+
+List things you need to use the software and how to install them.
+
+#### Roadmap
+
+- [x] docker
+- [x] docker compose
+
+### Installation
+
+1. Clone and configure the repo
+
+   [coodesh-fullstack-challenge-2021-api](https://github.com/wdev007/coodesh-fullstack-challenge-2021-api)
+
+2. Change the settings files
+   ```sh
+   cp .env.example .env
+   ```
 
 ## Usage
 
@@ -54,6 +91,4 @@ This project is [MIT](https://mit-license.org) licensed.
 
 ---
 
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
-
-[demo-screen]: docs/demo.mp4
+_[Challenge by coodesh](https://coodesh.com/)_
