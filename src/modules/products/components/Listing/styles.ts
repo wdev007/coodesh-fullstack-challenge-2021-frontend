@@ -9,20 +9,20 @@ const baseStyles: ButtonProps = {
 export const normalStyles: ButtonProps = {
   ...baseStyles,
   _hover: {
-    bg: "green.300",
+    bg: "gray.300",
   },
-  bg: "red.300",
+  bg: "gray.500",
 };
 
 export const activeStyles: ButtonProps = {
   ...baseStyles,
   _hover: {
-    bg: "blue.300",
+    bg: "gray.600",
   },
-  bg: "green.300",
+  bg: "gray.700",
 };
 
 export const separatorStyles: ButtonProps = {
   w: 7,
-  bg: "green.200",
+  bg: "gray.400",
 };

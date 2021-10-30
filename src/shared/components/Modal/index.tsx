@@ -34,10 +34,10 @@ const AppModal: FC<IProps> = ({
       <ModalHeader>
         {isLink ? (
           <Link href={url} isExternal>
-            Chakra Design system
+            {title}
           </Link>
         ) : (
-          title
+          { title }
         )}
       </ModalHeader>
       <ModalCloseButton />

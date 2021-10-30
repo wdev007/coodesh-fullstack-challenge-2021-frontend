@@ -6,6 +6,12 @@
   </a>
 </p>
 
+# DEMO
+
+![Listagem de produtos](docs/images/listing.png)
+
+![Detalhe do produto](docs/images/detail.png)
+
 ### Built With
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
@@ -49,3 +55,5 @@ This project is [MIT](https://mit-license.org) licensed.
 ---
 
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
+
+[demo-screen]: docs/demo.mp4
